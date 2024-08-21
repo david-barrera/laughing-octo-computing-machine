@@ -1,12 +1,12 @@
-import express, { Express } from "express";
+import express from "express";
+import { App } from "./app";
 
-const app: Express = express();
-const port = 3000;
+async function main() {
+  const app = new App(express());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+  await app.bootstrap();
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+  app.listen(3000, () => console.log("Server started at port 3000"));
+}
+
+main().catch(console.error);
