@@ -1,16 +1,18 @@
 import { CreateDeviceUseCase } from "../../../src/application/use-cases/create-device-use-case";
 import { Device } from "../../../src/domain/entities/device";
 import { IDeviceRepository } from "../../../src/domain/repositories/device-repository";
+import { LoggerMock } from "../../mocks/logger-mock";
 
 describe("CreateDeviceUseCase", () => {
   let usecase: CreateDeviceUseCase;
   let deviceRepository: IDeviceRepository;
 
   beforeEach(() => {
+    const logger = new LoggerMock();
     deviceRepository = {
       createDevice: jest.fn(),
     } as IDeviceRepository;
-    usecase = new CreateDeviceUseCase(deviceRepository);
+    usecase = new CreateDeviceUseCase(logger,deviceRepository);
   });
 
   describe("execute", () => {
