@@ -1,0 +1,17 @@
+meta {
+  name: Partial Update Device
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3000/devices/856e19d0-c2eb-4bc9-ada8-0e234caeadbf
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "new name"
+  }
+}

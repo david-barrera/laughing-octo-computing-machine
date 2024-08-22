@@ -1,0 +1,18 @@
+meta {
+  name: Delete Device
+  type: http
+  seq: 7
+}
+
+delete {
+  url: http://localhost:3000/devices/856e19d0-c2eb-4bc9-ada8-0e234caeadbf
+  body: none
+  auth: none
+}
+
+body:json {
+  {
+    "name": "new name 2",
+    "brand": "new brand name"
+  }
+}

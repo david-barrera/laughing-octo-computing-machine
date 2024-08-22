@@ -1,0 +1,18 @@
+meta {
+  name: Create Device
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/devices
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "reqwertw",
+    "brand": "Brand name"
+  }
+}

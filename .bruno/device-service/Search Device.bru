@@ -1,0 +1,24 @@
+meta {
+  name: Search Device
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:3000/devices/search?limit=10&page=1&brand=Brand name
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: 10
+  page: 1
+  brand: Brand name
+}
+
+body:json {
+  {
+    "name": "reqwert3y",
+    "brand": "Brand name"
+  }
+}
