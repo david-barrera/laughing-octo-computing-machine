@@ -23,7 +23,7 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
 
   async listDevices(input: PageInput): Promise<PaginatedResult<Device>> {
     const [items, total] = await this.repository.findAndCount({
-      skip: (input.page -1) * input.pageSize,
+      skip: (input.page - 1) * input.pageSize,
       take: input.pageSize,
       order: { createdAt: "ASC" },
     });
@@ -31,5 +31,17 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
       items: [...items],
       totalItems: total,
     };
+  }
+
+  async updateDevice(id: string, device: Partial<Device>): Promise<Device | null> {
+    const existingDevice = await this.repository.findOneBy({
+      id
+    });
+    if (!existingDevice) {
+      return null;
+    }
+    const deviceToUpdate = { ...existingDevice, ...device };
+    await this.repository.update(id, deviceToUpdate);
+    return this.repository.findOneBy({ id });
   }
 }
