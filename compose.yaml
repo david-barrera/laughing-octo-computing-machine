@@ -1,5 +1,5 @@
 services:
-  device-serivce:
+  device-service:
     image: device-service
     build:
       context: .
