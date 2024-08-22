@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { IDeviceRepository } from "../../domain/repositories/device-repository";
 import { DeviceModel } from "../models/device-model";
+import { UnknownRepositoryError } from "../errors/unknown-repository-error";
 
 export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
   private readonly repository;
@@ -9,6 +10,13 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
     this.repository = this.dataSource.getRepository(DeviceModel);
   }
   async createDevice(device: DeviceModel) {
-    return this.repository.save(device);
+    try {
+      return await this.repository.save(device);
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new UnknownRepositoryError(DeviceRepositoryTypeormImpl.name, e);
+      }
+      throw e;
+    }
   }
 }

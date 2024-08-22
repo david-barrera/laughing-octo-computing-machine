@@ -16,8 +16,8 @@ export class Log4JsLogger implements ILogger {
   info(message: string): void {
     this.logger.info(message);
   }
-  error(message: string): void {
-    this.logger.error(message);
+  error(message: string, error: Error): void {
+    this.logger.error(message, error);
   }
 
   setContext(context: string): void {

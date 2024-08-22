@@ -17,20 +17,21 @@ import { DeviceRoutes } from "./interface/http/device-routes";
 import { AppDataSourceOptions } from "./infrastructure/configs/typeorm.config";
 import { AppConfig } from "./infrastructure/configs/app.config";
 import { Log4JsLogger } from "./infrastructure/loggers/log4js-logger";
+import {createErrorHandlerMiddleware} from "./interface/http/middlewares/error-handler-middleware";
 
 export class App {
   private readonly dependencies: Map<Symbol, any> = new Map();
 
   constructor(private readonly app: Application) {}
   async bootstrap() {
-    this.loadDependencies();
+    this.config();
+    await this.loadDependencies();
+    this.routes();
+    this.app.use(createErrorHandlerMiddleware(this.dependencies.get(LOGGER)));
   }
 
   listen(port: number, callback: () => void) {
-    this.app.listen(port, callback).addListener("error", (error: Error) => {
-      console.error(error);
-      console.error("Server failed to start");
-    });
+    this.app.listen(port, callback);
   }
 
   private async loadDependencies() {
@@ -50,15 +51,13 @@ export class App {
       CREATE_DEVICE_USE_CASE,
       new CreateDeviceUseCase(
         this.dependencies.get(LOGGER),
-        this.dependencies.get(DEVICE_REPOSITORY),
+        this.dependencies.get(DEVICE_REPOSITORY)
       )
     );
     this.dependencies.set(
       DEVICE_CONTROLLER,
       new DeviceController(this.dependencies.get(CREATE_DEVICE_USE_CASE))
     );
-    this.config();
-    this.routes();
   }
   private config() {
     this.app.use(bodyParser.json());
