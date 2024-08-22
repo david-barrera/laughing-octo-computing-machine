@@ -1,8 +1,17 @@
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 import { Device } from "../../domain/entities/device";
 
+@Entity()
 export class DeviceModel implements Device {
-  public id!: string;
-  public name!: string;
-  public brand!: string;
-  public createdAt!: Date;
+  @PrimaryColumn("uuid", { generated: "uuid" })
+  id: string;
+
+  @Column("text")
+  name: string;
+
+  @Column("text")
+  brand: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
