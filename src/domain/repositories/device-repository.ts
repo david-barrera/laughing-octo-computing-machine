@@ -24,4 +24,5 @@ export interface IDeviceRepository {
   getDeviceOrNull(id: string): Promise<Device | null>;
   listDevices(input: PageInput): Promise<PaginatedResult<Device>>;
   updateDevice(id: string, input: UpdateDeviceInput): Promise<Device | null>;
+  deleteDevice(id: string): Promise<{success: boolean}>;
 }

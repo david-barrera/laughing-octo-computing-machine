@@ -44,4 +44,9 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
     await this.repository.update(id, deviceToUpdate);
     return this.repository.findOneBy({ id });
   }
+
+  async deleteDevice(id: string): Promise<{ success: boolean }> {
+    const result = await this.repository.delete(id);
+    return { success: result.affected === 1 };
+  }
 }

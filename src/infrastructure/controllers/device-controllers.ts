@@ -4,13 +4,15 @@ import { BaseController } from "./base-controller";
 import { GetDeviceUseCase } from "../../application/use-cases/get-device-use-case";
 import { ListDevicesUseCase } from "../../application/use-cases/list-devices-use-case";
 import { UpdateDeviceUseCase } from "../../application/use-cases/update-device-use-case";
+import { DeleteDeviceUseCase } from "../../application/use-cases/delete-device-use-case";
 
 export class DeviceController extends BaseController {
   constructor(
     private readonly createDeviceUseCase: CreateDeviceUseCase,
     private readonly getDeviceUseCase: GetDeviceUseCase,
     private readonly listDevicesUseCase: ListDevicesUseCase,
-    private readonly updateDeviceUseCase: UpdateDeviceUseCase
+    private readonly updateDeviceUseCase: UpdateDeviceUseCase,
+    private readonly deleteDeviceUseCase: DeleteDeviceUseCase
   ) {
     super();
   }
@@ -43,6 +45,11 @@ export class DeviceController extends BaseController {
       name: req.body.name,
       brand: req.body.brand,
     });
+    res.status(200).json(result);
+  }
+
+  async deleteDevice(req: Request, res: Response) {
+    const result = await this.deleteDeviceUseCase.execute(req.params.id);
     res.status(200).json(result);
   }
 }

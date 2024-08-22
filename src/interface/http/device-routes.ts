@@ -1,7 +1,11 @@
 import express from "express";
 import { DeviceController } from "../../infrastructure/controllers/device-controllers";
 import { IRouter } from "./router-interface";
-import { createDeviceValidator, fullUpdateDeviceValidator, getDeviceValidator } from "../../infrastructure/validators/device-validator";
+import {
+  createDeviceValidator,
+  fullUpdateDeviceValidator,
+  idDeviceValidator,
+} from "../../infrastructure/validators/device-validator";
 import { validationMiddleware } from "./middlewares/validation-middleware";
 import { paginationInputValidator } from "../../infrastructure/validators/pagination-validator";
 
@@ -16,37 +20,43 @@ export class DeviceRoutes implements IRouter<express.Router> {
       this.path,
       createDeviceValidator,
       validationMiddleware,
-      this.deviceController.createDevice.bind(this.deviceController),
+      this.deviceController.createDevice.bind(this.deviceController)
     );
 
     this.router.get(
       `${this.path}/:id`,
-      getDeviceValidator,
+      idDeviceValidator,
       validationMiddleware,
-      this.deviceController.getDevice.bind(this.deviceController),
+      this.deviceController.getDevice.bind(this.deviceController)
     );
 
     this.router.get(
       this.path,
       paginationInputValidator,
       validationMiddleware,
-      this.deviceController.listDevices.bind(this.deviceController),
+      this.deviceController.listDevices.bind(this.deviceController)
     );
 
     this.router.put(
       `${this.path}/:id`,
       fullUpdateDeviceValidator,
       validationMiddleware,
-      this.deviceController.updateDevice.bind(this.deviceController),
+      this.deviceController.updateDevice.bind(this.deviceController)
     );
 
     this.router.patch(
       `${this.path}/:id`,
       paginationInputValidator,
       validationMiddleware,
-      this.deviceController.updateDevice.bind(this.deviceController),
+      this.deviceController.updateDevice.bind(this.deviceController)
     );
 
+    this.router.delete(
+      `${this.path}/:id`,
+      idDeviceValidator,
+      validationMiddleware,
+      this.deviceController.deleteDevice.bind(this.deviceController)
+    );
     return this.router;
   }
 }

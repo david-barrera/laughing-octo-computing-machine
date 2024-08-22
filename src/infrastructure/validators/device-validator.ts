@@ -5,7 +5,7 @@ export const createDeviceValidator = [
   body('brand').isString().withMessage('Device brand should be a string')
 ];
 
-export const getDeviceValidator = [
+export const idDeviceValidator = [
   param('id').isUUID().withMessage('Device id should be a UUID')
 ];
 
