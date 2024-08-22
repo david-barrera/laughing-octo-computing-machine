@@ -6,7 +6,8 @@
 
 ## Instalation
 1. Clone repositoy
-1. Run `docker compose up`
+1. Run `docker compose up`. This will build the image and start the container. You can start using the API when you see the message `Server running at http://localhost:3000`
+1. The API will be available at `http://localhost:3000`
 
 ## How to test the API
 
