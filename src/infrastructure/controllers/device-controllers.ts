@@ -1,10 +1,12 @@
+import { Request, Response } from "express";
 import { CreateDeviceUseCase } from "../../application/use-cases/create-device-use-case";
-import { Device } from "../../domain/entities/device";
+
 
 export class DeviceController {
   constructor(private readonly createDeviceUseCase: CreateDeviceUseCase) {}
 
-  async createDevice(device: Device): Promise<Device> {
-    return this.createDeviceUseCase.execute(device);
+  async createDevice(req: Request, res: Response) {
+    const result = await this.createDeviceUseCase.execute(req.body);
+    res.status(201).json(result);
   }
 }
