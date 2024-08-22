@@ -1,5 +1,10 @@
 import { Device } from "../entities/device";
 
+export interface CreateDeviceInput{
+  name: string;
+  brand: string;
+}
+
 export interface IDeviceRepository {
-  createDevice(device: Device): Promise<Device>;
+  createDevice(input: CreateDeviceInput): Promise<Device>;
 }
