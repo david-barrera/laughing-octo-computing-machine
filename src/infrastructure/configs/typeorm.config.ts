@@ -13,7 +13,7 @@ export function AppDataSourceOptions(
   return {
     type: "postgres",
     database: "device-service",
-    entities: [__dirname + "/../models/**/*-model.ts"],
+    entities: [__dirname + "/../models/**/*-model.{js,ts}"],
     synchronize: true,
     ...credentials,
   };
