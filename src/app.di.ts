@@ -1,6 +1,7 @@
 export const DEVICE_REPOSITORY = Symbol("DEVICE_REPOSITORY");
 export const CREATE_DEVICE_USE_CASE = Symbol("CREATE_DEVICE_USE_CASE");
 export const GET_DEVICE_USE_CASE = Symbol("GET_DEVICE_USE_CASE");
+export const LIST_DEVICES_USE_CASE = Symbol("LIST_DEVICES_USE_CASE");
 export const APP_DATASOURCE = Symbol("APP_DATASOURCE");
 export const DEVICE_CONTROLLER = Symbol("DEVICE_CONTROLLER");
 export const LOGGER = Symbol("LOGGER");
