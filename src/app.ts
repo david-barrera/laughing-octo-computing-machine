@@ -26,7 +26,7 @@ export class App {
     });
   }
 
-  private loadDependencies() {
+  private async loadDependencies() {
     this.dependencies.set(APP_DATASOURCE, new DataSource(AppDataSourceOptions));
     this.dependencies.set(
       DEVICE_REPOSITORY,
@@ -36,6 +36,8 @@ export class App {
       CREATE_DEVICE_USE_CASE,
       new CreateDeviceUseCase(this.dependencies.get(DEVICE_REPOSITORY))
     );
+    const dataSource = <DataSource>this.dependencies.get(APP_DATASOURCE);
+    await dataSource.initialize();
     this.config();
     this.routes;
   }
