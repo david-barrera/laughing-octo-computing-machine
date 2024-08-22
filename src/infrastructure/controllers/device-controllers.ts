@@ -5,6 +5,7 @@ import { GetDeviceUseCase } from "../../application/use-cases/get-device-use-cas
 import { ListDevicesUseCase } from "../../application/use-cases/list-devices-use-case";
 import { UpdateDeviceUseCase } from "../../application/use-cases/update-device-use-case";
 import { DeleteDeviceUseCase } from "../../application/use-cases/delete-device-use-case";
+import { SearchDeviceUseCase } from "../../application/use-cases/search-device-use-case";
 
 export class DeviceController extends BaseController {
   constructor(
@@ -12,7 +13,8 @@ export class DeviceController extends BaseController {
     private readonly getDeviceUseCase: GetDeviceUseCase,
     private readonly listDevicesUseCase: ListDevicesUseCase,
     private readonly updateDeviceUseCase: UpdateDeviceUseCase,
-    private readonly deleteDeviceUseCase: DeleteDeviceUseCase
+    private readonly deleteDeviceUseCase: DeleteDeviceUseCase,
+    private readonly searchDeviceUseCase: SearchDeviceUseCase
   ) {
     super();
   }
@@ -50,6 +52,18 @@ export class DeviceController extends BaseController {
 
   async deleteDevice(req: Request, res: Response) {
     const result = await this.deleteDeviceUseCase.execute(req.params.id);
+    res.status(200).json(result);
+  }
+
+  async searchDevice(req: Request, res: Response) {
+    const paginationInput = {
+      page: parseInt(req.query.page as string) || 1,
+      pageSize: parseInt(req.query.limit as string) || 10,
+    };
+    const result = await this.searchDeviceUseCase.execute(
+      { brand: req.query.brand as string },
+      paginationInput
+    );
     res.status(200).json(result);
   }
 }

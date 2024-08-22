@@ -5,6 +5,7 @@ import {
   createDeviceValidator,
   fullUpdateDeviceValidator,
   idDeviceValidator,
+  searchDeviceValidator,
 } from "../../infrastructure/validators/device-validator";
 import { validationMiddleware } from "./middlewares/validation-middleware";
 import { paginationInputValidator } from "../../infrastructure/validators/pagination-validator";
@@ -21,6 +22,14 @@ export class DeviceRoutes implements IRouter<express.Router> {
       createDeviceValidator,
       validationMiddleware,
       this.deviceController.createDevice.bind(this.deviceController)
+    );
+
+    this.router.get(
+      `${this.path}/search`,
+      // paginationInputValidator,
+      searchDeviceValidator,
+      validationMiddleware,
+      this.deviceController.searchDevice.bind(this.deviceController)
     );
 
     this.router.get(
@@ -57,6 +66,7 @@ export class DeviceRoutes implements IRouter<express.Router> {
       validationMiddleware,
       this.deviceController.deleteDevice.bind(this.deviceController)
     );
+
     return this.router;
   }
 }

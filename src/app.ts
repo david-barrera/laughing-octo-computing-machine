@@ -14,6 +14,7 @@ import {
   GET_DEVICE_USE_CASE,
   LIST_DEVICES_USE_CASE,
   LOGGER,
+  SEARCH_DEVICE_USE_CASE,
   UPDATE_DEVICE_USE_CASE,
 } from "./app.di";
 import { DataSource } from "typeorm";
@@ -26,6 +27,7 @@ import { GetDeviceUseCase } from "./application/use-cases/get-device-use-case";
 import { ListDevicesUseCase } from "./application/use-cases/list-devices-use-case";
 import { UpdateDeviceUseCase } from "./application/use-cases/update-device-use-case";
 import { DeleteDeviceUseCase } from "./application/use-cases/delete-device-use-case";
+import { SearchDeviceUseCase } from "./application/use-cases/search-device-use-case";
 
 export class App {
   private readonly dependencies: Map<Symbol, any> = new Map();
@@ -38,8 +40,12 @@ export class App {
     this.app.use(createErrorHandlerMiddleware(this.dependencies.get(LOGGER)));
   }
 
-  listen(port: number, callback: () => void) {
-    this.app.listen(port, callback);
+  listen() {
+    const port = process.env.PORT || 3000;
+    const logger = this.dependencies.get(LOGGER);
+    this.app.listen(port, () => {
+      logger.info(`Server is running on http://localhost:${port}`);
+    });
   }
 
   private async loadDependencies() {
@@ -91,13 +97,22 @@ export class App {
       )
     );
     this.dependencies.set(
+      SEARCH_DEVICE_USE_CASE,
+      new SearchDeviceUseCase(
+        this.dependencies.get(LOGGER),
+        this.dependencies.get(DEVICE_REPOSITORY)
+      )
+    );
+
+    this.dependencies.set(
       DEVICE_CONTROLLER,
       new DeviceController(
         this.dependencies.get(CREATE_DEVICE_USE_CASE),
         this.dependencies.get(GET_DEVICE_USE_CASE),
         this.dependencies.get(LIST_DEVICES_USE_CASE),
         this.dependencies.get(UPDATE_DEVICE_USE_CASE),
-        this.dependencies.get(DELETE_DEVICE_USE_CASE)
+        this.dependencies.get(DELETE_DEVICE_USE_CASE),
+        this.dependencies.get(SEARCH_DEVICE_USE_CASE)
       )
     );
   }

@@ -6,5 +6,5 @@ import { App } from "./app";
 
   await app.bootstrap();
 
-  app.listen(3000, () => console.log("Server started at port 3000"));
+  app.listen()
 })();

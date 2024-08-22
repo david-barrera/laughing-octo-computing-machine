@@ -5,6 +5,10 @@ export interface CreateDeviceInput {
   brand: string;
 }
 
+export interface SearchDeviceInput {
+  brand: string;
+}
+
 export interface UpdateDeviceInput {
   name?: string;
   brand?: string;
@@ -25,4 +29,5 @@ export interface IDeviceRepository {
   listDevices(input: PageInput): Promise<PaginatedResult<Device>>;
   updateDevice(id: string, input: UpdateDeviceInput): Promise<Device | null>;
   deleteDevice(id: string): Promise<{success: boolean}>;
+  searchDevice(input: SearchDeviceInput, pageInput: PageInput): Promise<PaginatedResult<Device>>;
 }

@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, FindOperator, FindOptionsWhere, ILike } from "typeorm";
 import {
   IDeviceRepository,
   PageInput,
@@ -33,9 +33,12 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
     };
   }
 
-  async updateDevice(id: string, device: Partial<Device>): Promise<Device | null> {
+  async updateDevice(
+    id: string,
+    device: Partial<Device>
+  ): Promise<Device | null> {
     const existingDevice = await this.repository.findOneBy({
-      id
+      id,
     });
     if (!existingDevice) {
       return null;
@@ -48,5 +51,26 @@ export class DeviceRepositoryTypeormImpl implements IDeviceRepository {
   async deleteDevice(id: string): Promise<{ success: boolean }> {
     const result = await this.repository.delete(id);
     return { success: result.affected === 1 };
+  }
+
+  async searchDevice(
+    input: { brand: string },
+    pageInput: PageInput
+  ): Promise<PaginatedResult<Device>> {
+    const whereClause = {} as FindOptionsWhere<DeviceModel>;
+    if (input.brand) {
+      whereClause.brand = ILike(`%${input.brand}%`);
+    }
+
+    const [items, total] = await this.repository.findAndCount({
+      where: whereClause,
+      skip: (pageInput.page - 1) * pageInput.pageSize,
+      take: pageInput.pageSize,
+      order: { createdAt: "DESC" },
+    });
+    return {
+      items: [...items],
+      totalItems: total,
+    };
   }
 }

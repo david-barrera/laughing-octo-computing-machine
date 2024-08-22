@@ -4,6 +4,7 @@ export const GET_DEVICE_USE_CASE = Symbol("GET_DEVICE_USE_CASE");
 export const LIST_DEVICES_USE_CASE = Symbol("LIST_DEVICES_USE_CASE");
 export const UPDATE_DEVICE_USE_CASE = Symbol("UPDATE_DEVICE_USE_CASE");
 export const DELETE_DEVICE_USE_CASE = Symbol("DELETE_DEVICE_USE_CASE");
+export const SEARCH_DEVICE_USE_CASE = Symbol("SEARCH_DEVICE_USE_CASE");
 export const APP_DATASOURCE = Symbol("APP_DATASOURCE");
 export const DEVICE_CONTROLLER = Symbol("DEVICE_CONTROLLER");
 export const LOGGER = Symbol("LOGGER");

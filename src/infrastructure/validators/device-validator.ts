@@ -20,3 +20,7 @@ export const fullUpdateDeviceValidator = [
   body('name').isString().withMessage('Device name should be a string'),
   body('brand').isString().withMessage('Device brand should be a string')
 ];
+
+export const searchDeviceValidator = [
+  param('brand').trim().escape().isString().withMessage('Device brand should be a string')
+];
