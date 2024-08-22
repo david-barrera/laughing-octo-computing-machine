@@ -4,14 +4,14 @@ import { Device } from "../../domain/entities/device";
 @Entity()
 export class DeviceModel implements Device {
   @PrimaryColumn("uuid", { generated: "uuid" })
-  id: string;
+  id!: string;
 
   @Column("text", { unique: true })
-  name: string;
+  name!: string;
 
   @Column("text")
-  brand: string;
+  brand!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

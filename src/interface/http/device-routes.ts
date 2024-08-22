@@ -1,9 +1,8 @@
 import express from "express";
 import { DeviceController } from "../../infrastructure/controllers/device-controllers";
 import { IRouter } from "./router-interface";
-import { createDeviceValidator } from "../../infrastructure/validators/device-validator";
+import { createDeviceValidator, getDeviceValidator } from "../../infrastructure/validators/device-validator";
 import { validationMiddleware } from "./middlewares/validation-middleware";
-import { errorHandlerMiddleware } from "./middlewares/error-handler-middleware";
 
 export class DeviceRoutes implements IRouter<express.Router> {
   private readonly path = "/devices";
@@ -17,6 +16,13 @@ export class DeviceRoutes implements IRouter<express.Router> {
       createDeviceValidator,
       validationMiddleware,
       this.deviceController.createDevice.bind(this.deviceController),
+    );
+
+    this.router.get(
+      `${this.path}/:id`,
+      getDeviceValidator,
+      validationMiddleware,
+      this.deviceController.getDevice.bind(this.deviceController),
     );
     return this.router;
   }

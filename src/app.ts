@@ -10,6 +10,7 @@ import {
   CREATE_DEVICE_USE_CASE,
   DEVICE_CONTROLLER,
   DEVICE_REPOSITORY,
+  GET_DEVICE_USE_CASE,
   LOGGER,
 } from "./app.di";
 import { DataSource } from "typeorm";
@@ -17,7 +18,8 @@ import { DeviceRoutes } from "./interface/http/device-routes";
 import { AppDataSourceOptions } from "./infrastructure/configs/typeorm.config";
 import { AppConfig } from "./infrastructure/configs/app.config";
 import { Log4JsLogger } from "./infrastructure/loggers/log4js-logger";
-import {createErrorHandlerMiddleware} from "./interface/http/middlewares/error-handler-middleware";
+import { createErrorHandlerMiddleware } from "./interface/http/middlewares/error-handler-middleware";
+import { GetDeviceUseCase } from "./application/use-cases/get-device-use-case";
 
 export class App {
   private readonly dependencies: Map<Symbol, any> = new Map();
@@ -55,8 +57,18 @@ export class App {
       )
     );
     this.dependencies.set(
+      GET_DEVICE_USE_CASE,
+      new GetDeviceUseCase(
+        this.dependencies.get(LOGGER),
+        this.dependencies.get(DEVICE_REPOSITORY)
+      )
+    );
+    this.dependencies.set(
       DEVICE_CONTROLLER,
-      new DeviceController(this.dependencies.get(CREATE_DEVICE_USE_CASE))
+      new DeviceController(
+        this.dependencies.get(CREATE_DEVICE_USE_CASE),
+        this.dependencies.get(GET_DEVICE_USE_CASE)
+      )
     );
   }
   private config() {

@@ -11,7 +11,7 @@ describe("CreateDeviceUseCase", () => {
     const logger = new LoggerMock();
     deviceRepository = {
       createDevice: jest.fn(),
-    } as IDeviceRepository;
+    } as unknown as IDeviceRepository;
     usecase = new CreateDeviceUseCase(logger,deviceRepository);
   });
 
