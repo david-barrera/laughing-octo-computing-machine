@@ -22,3 +22,5 @@ If you want to test it with other API client here is a sort description of each 
 |PATCH| `/devices/{id}`| Partial update device by id|
 |DELETE| `/devices/{id}`| Delete device by id|
 |POST| `/devices/search`| Search devices by brand|
+
+A full description and example of each endpoint can be found in the OpenApi file [API Documentation](./device-service-api-definition.yml)

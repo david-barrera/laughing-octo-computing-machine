@@ -1,0 +1,184 @@
+openapi: "3.0.3"
+info:
+  title: Device Service API
+  version: "0.0.1"
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /devices:
+    post:
+      summary: Create a new device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                brand:
+                  type: string
+      responses:
+        "200":
+          description: Device created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+    get:
+      summary: Get all devices
+      responses:
+        "200":
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDevices"
+  /devices/{id}:
+    get:
+      summary: Get a device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "a9dc85d3-d48b-4d6f-9e2a-e0a9fba08f49"
+      responses:
+        "200":
+          description: Device found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+        "404":
+          description: Device not found
+    patch:
+      summary: Partial update a device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "a9dc85d3-d48b-4d6f-9e2a-e0a9fba08f49"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                brand:
+                  type: string
+      responses:
+        "200":
+          description: Device updated
+          content:
+            application/json:
+              example:
+                $ref: "#/components/schemas/Device"
+        "404":
+          description: Device not found
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+    put:
+      summary: Full update a device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "a9dc85d3-d48b-4d6f-9e2a-e0a9fba08f49"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                brand:
+                  type: string
+      responses:
+        "200":
+          description: Device updated
+          content:
+            application/json:
+              example:
+                $ref: "#/components/schemas/Device"
+        "404":
+          description: Device not found
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+    delete:
+      summary: Delete a device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "a9dc85d3-d48b-4d-6f-9e2a-e0a9fba08f49"
+      responses:
+        "204":
+          description: Device deleted
+        "404":
+          description: Device not found
+        "500":
+          description: Internal server error
+  /devices/search:
+    get:
+      summary: Search devices by brand
+      parameters:
+        - name: brand
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "Apple"
+      responses:
+        "200":
+          description: List of devices
+          content:
+            application/json:
+                example:
+                  $ref: "#/components/schemas/PaginatedDevices"
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "a9dc85d3-d48b-4d6f-9e2a-e0a9fba08f49"
+        name:
+          type: string
+          example: "Smartphone"
+        brand:
+          type: string
+          example: "Apple"
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+    PaginatedDevices:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Device"
+        totalItems:
+          type: integer
+          example: 1
