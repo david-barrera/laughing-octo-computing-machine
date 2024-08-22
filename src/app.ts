@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv/config";
 import { Application } from "express";
 import * as bodyParser from "body-parser";
 import { DeviceController } from "./infrastructure/controllers/device-controllers";
@@ -11,8 +12,9 @@ import {
   DEVICE_REPOSITORY,
 } from "./app.di";
 import { DataSource } from "typeorm";
-import { AppDataSourceOptions } from "./infrastructure/config/typeorm.config";
 import { DeviceRoutes } from "./interface/http/device-routes";
+import { AppDataSourceOptions } from "./infrastructure/configs/typeorm.config";
+import { AppConfig } from "./infrastructure/configs/app.config";
 
 export class App {
   private readonly dependencies: Map<Symbol, any> = new Map();
@@ -30,16 +32,12 @@ export class App {
   }
 
   private async loadDependencies() {
+    const appConfig = new AppConfig();
     this.dependencies.set(
       APP_DATASOURCE,
-      new DataSource(
-        AppDataSourceOptions({
-          host: "localhost",
-          port: 5432,
-          username: "postgres",
-          password: "postgres",
-        })
-      )
+      await new DataSource(
+        AppDataSourceOptions(appConfig.databaseCredentials())
+      ).initialize()
     );
     this.dependencies.set(
       DEVICE_REPOSITORY,
@@ -53,8 +51,6 @@ export class App {
       DEVICE_CONTROLLER,
       new DeviceController(this.dependencies.get(CREATE_DEVICE_USE_CASE))
     );
-    const dataSource = <DataSource>this.dependencies.get(APP_DATASOURCE);
-    await dataSource.initialize();
     this.config();
     this.routes();
   }
